@@ -1,4 +1,11 @@
-let dataHolder = [];
+let dataHolder = [
+    {
+        roomIndex: 1,
+        name: "room zero",
+        bookedBy: "Hello Mom",
+        price: 1234
+    }
+];
 
 
 // Display Rooms
