@@ -27,8 +27,8 @@ function addRoom() {
     const roomName = document.getElementById('room-name').value;
     const roomBookedBy = document.getElementById('room-bookedBy').value;
     const roomPrice = document.getElementById('room-price').value;
+    room.push({ name: roomName, bookedBy: roomBookedBy, price: parseInt(roomPrice)});
     if (editingRoomId === null) {
-        room.push({ name: roomName, bookedBy: roomBookedBy, price: parseInt(roomPrice)});
     } else {
         rooms[editingRoomId] = { name:roomName, bookedBy: roomBookedBy, price: parseInt(roomPrice)};
         editingRoomId = null;
