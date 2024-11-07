@@ -10,23 +10,25 @@ let dataHolder = [
 
 // Display Rooms
 
-function showRooms () {
+function showRooms (d) {
     const roomContainer = document.getElementById('room-container');
-    dataHolder.forEach((room, index) => {
-        const roomElement = document.createElement('div');
-        roomElement.className = room;
-        roomElement.innerHTML = `
-            <h2>${room.name}</h2>
-            <p>Room booked by £${room.bookedBy} per night</p>
-            <p>Price: £${room.price} per night</p>
-            <input type="submit" value="Book Now" onclick="bookRoom('${room.name}', ${room.price})" />
-            <input type="submit" value="Edit" onclick="editRoom(${index})" />
-            <input type="submit" value="Delete" onclick="deleteRoom(${index})" />
-        `;
-        roomContainer.appendChild(roomElement);
-    });
+    if (d) {
+        d.forEach((room, index) => {
+            const roomElement = document.createElement('div');
+            roomElement.className = room;
+            roomElement.innerHTML = `
+                <h2>${room.name}</h2>
+                <p>Room booked by £${room.bookedBy} per night</p>
+                <p>Price: £${room.price} per night</p>
+                <input type="submit" value="Book Now" onclick="bookRoom('${room.name}', ${room.price})" />
+                <input type="submit" value="Edit" onclick="editRoom(${index})" />
+                <input type="submit" value="Delete" onclick="deleteRoom(${index})" />
+            `;
+        });
+    }
 }
 
+showRooms(dataHolder);
 
 // Add or Update a room
 
