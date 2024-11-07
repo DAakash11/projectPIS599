@@ -23,7 +23,7 @@ function showRooms () {
 
 // Add or Update a room
 
-function addRoom () {
+function addRoom() {
     const roomName = document.getElementById('room-name').value;
     const roomBookedBy = document.getElementById('room-bookedBy').value;
     const roomPrice = document.getElementById('room-price').value;
