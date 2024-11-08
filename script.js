@@ -13,7 +13,7 @@ let dataHolder = [
 function showRooms (dataSet) {
     if (dataSet) {
         const roomElement = document.getElementById('room-container');
-        roomElement.innerHTML = "";
+        roomElement.innerHTML = '';
         dataSet.forEach((room) => {
             roomElement.innerHTML += `
                 <h2>${room.name}</h2>
