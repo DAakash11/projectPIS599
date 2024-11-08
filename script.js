@@ -24,7 +24,7 @@ function showRooms (dataSet) {
                 <input type="submit" value="Edit" onclick="editRoom(${room.roomIndex})" />
                 <input type="submit" value="Delete" onclick="deleteRoom(${room.roomIndex})" />
             `;
-            roomContainer.appendChild(roomElement);
+            roomContainer.insertAdjacentElement(roomElement);
         });
     }
 }
