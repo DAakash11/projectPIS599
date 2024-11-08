@@ -12,8 +12,9 @@ let dataHolder = [
 
 function showRooms (dataSet) {
     if (dataSet) {
+        const roomElement = document.getElementById('room-container');
+        roomElement.innerHTML = "";
         dataSet.forEach((room) => {
-            const roomElement = document.getElementById('room-container');
             roomElement.innerHTML += `
                 <h2>${room.name}</h2>
                 <p>Room booked by £${room.bookedBy} per night</p>
