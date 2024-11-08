@@ -10,10 +10,10 @@ let dataHolder = [
 
 // Display Rooms
 
-function showRooms (d) {
+function showRooms (dataSet) {
     const roomContainer = document.getElementById('room-container');
-    if (d) {
-        d.forEach((room, index) => {
+    if (dataSet) {
+        dataSet.forEach((room) => {
             const roomElement = document.createElement('div');
             roomElement.className = room;
             roomElement.innerHTML = `
@@ -21,8 +21,8 @@ function showRooms (d) {
                 <p>Room booked by £${room.bookedBy} per night</p>
                 <p>Price: £${room.price} per night</p>
                 <input type="submit" value="Book Now" onclick="bookRoom('${room.name}', ${room.price})" />
-                <input type="submit" value="Edit" onclick="editRoom(${index})" />
-                <input type="submit" value="Delete" onclick="deleteRoom(${index})" />
+                <input type="submit" value="Edit" onclick="editRoom(${room.roomIndex})" />
+                <input type="submit" value="Delete" onclick="deleteRoom(${room.roomIndex})" />
             `;
         });
     }
