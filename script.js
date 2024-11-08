@@ -11,7 +11,6 @@ let dataHolder = [
 // Display Rooms
 
 function showRooms (dataSet) {
-    const roomContainer = document.getElementById('room-container');
     if (dataSet) {
         dataSet.forEach((room) => {
             const roomElement = document.createElement('div');
@@ -20,11 +19,11 @@ function showRooms (dataSet) {
                 <h2>${room.name}</h2>
                 <p>Room booked by £${room.bookedBy} per night</p>
                 <p>Price: £${room.price} per night</p>
-                <input type="submit" value="Book Now" onclick="bookRoom('${room.name}', ${room.price})" />
-                <input type="submit" value="Edit" onclick="editRoom(${room.roomIndex})" />
-                <input type="submit" value="Delete" onclick="deleteRoom(${room.roomIndex})" />
+                <button onclick="bookRoom('${room.name}', ${room.price})"> Book Now </button>
+                <button onclick="editRoom(${room.roomIndex})"> Edit Room </button>
+                <button onclick="deleteRoom(${room.roomIndex})"> Delete Room </button>
             `;
-            roomContainer.insertAdjacentElement(roomElement);
+            document.getElementById('room-container').appendChild(roomElement);
         });
     }
 }
