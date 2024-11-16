@@ -1,6 +1,5 @@
 let dataHolder = [
     {
-        roomIndex: 1,
         name: "room zero",
         bookedBy: "Hello Mom",
         price: 1234
@@ -10,20 +9,20 @@ let dataHolder = [
 
 // Display Rooms
 
-function showRooms (dataSet) {
-    if (dataSet) {
-        const roomElement = document.getElementById('room-container');
-        dataSet.forEach((room) => {
-            roomElement.innerHTML = `
-                <h2>${room.name}</h2>
-                <p>Room booked by £${room.bookedBy} per night</p>
-                <p>Price: £${room.price} per night</p>
-                <button onclick="bookRoom('${index})"> Book Now </button>
-                <button onclick="editRoom(${index})"> Edit Room </button>
-                <button onclick="deleteRoom(${index})"> Delete Room </button>
+function showRooms () {
+    const roomContainer = document.getElementById('room-container');
+    roomContainer.innerHTML = '';
+    dataHolder.forEach((room, index) => {
+        const roomElement = document.createElement('room');
+        roomElement.innerHTML = `
+            <h2>${room.name}</h2>
+            <p>Booked by <strong>${room.bookedBy}</strong></p>
+            <button onclick="bookRoom()">Book Now</button>
+            <button onclick="btnEdit()">Edit</button>
+            <button onclick="btnDelete()">Delete</button>
             `;
-        });
-    }
+        roomContainer.appendChild(roomElement);
+    });
 }
 
-showRooms(dataHolder);
+showRooms();
