@@ -5,7 +5,7 @@ let dataHolder = [
         price: 2500
     }
 ];
-
+editingRoomId = null;
 
 // Display Rooms
 
@@ -26,3 +26,18 @@ function showRooms () {
 }
 
 showRooms();
+
+function btnEdit(roomIndex) {
+    const room = dataHolder[roomIndex];
+    document.getElementById('room-bookedBy').value = room.bookedBy;
+    document.getElementById('room-name').value = room.name;
+    document.getElementById('room-price').value = room.price;
+    document.getElementById('add-update-btn').textContent = 'Update Details';
+    editingRoomId = roomIndex;
+}
+
+function btnDelete(roomIndex) {
+    room.splice(roomIndex, 1);
+    showRooms();
+    alert('Details deleted...');
+}
