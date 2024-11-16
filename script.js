@@ -21,7 +21,7 @@ function showRooms () {
             <button onclick="btnEdit()">Edit</button>
             <button onclick="btnDelete()">Delete</button>
             `;
-        roomContainer.appendChild(roomElement);
+        roomContainer.append(roomElement);
     });
 }
 
