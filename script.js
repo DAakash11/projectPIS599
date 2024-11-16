@@ -11,7 +11,6 @@ let dataHolder = [
 
 function showRooms () {
     const roomContainer = document.getElementById('room-container');
-    roomContainer.innerHTML = '';
     dataHolder.forEach((room, index) => {
         const roomElement = document.createElement('room');
         roomElement.innerHTML = `
