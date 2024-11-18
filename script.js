@@ -23,7 +23,7 @@ function addRoom() {
     } else {
         dataHolder[editingRoomId] = { name: roomName, bookedBy: custName, price:roomPrice};
         editingRoomId = null;
-        document.getElementById('add-update-btn').textContent = 'Add Room';
+        document.getElementById('add-update-btn').value = 'Add Room';
     }
     // clear form
     document.getElementById('room-bookedBy').value = '';
@@ -72,7 +72,7 @@ function btnEdit(roomIndex) {
     document.getElementById('room-bookedBy').value = room.bookedBy;
     document.getElementById('room-name').value = room.name;
     document.getElementById('room-price').value = room.price;
-    document.getElementById('add-update-btn').textContent = 'Update Details';
+    document.getElementById('add-update-btn').value = 'Update Details';
     editingRoomId = roomIndex;
 }
 
