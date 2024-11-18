@@ -15,9 +15,9 @@ editingRoomId = null;
 // function to add Room details
 
 function addRoom() {
-    const custName = document.getElementById('room-bookedBy');
-    const roomName = document.getElementById('room-name');
-    const roomPrice = document.getElementById('room-price');
+    const custName = document.getElementById('room-bookedBy').value;
+    const roomName = document.getElementById('room-name').value;
+    const roomPrice = document.getElementById('room-price').value;
     dataHolder.push({ bookedBy: custName, name: roomName, price:roomPrice});
     showRooms();
 }
@@ -29,6 +29,7 @@ function showRooms () {
     const roomContainer = document.getElementById('room-container');
     dataHolder.forEach((room, index) => {
         const roomElement = document.createElement('div');
+        roomElement.innerHTML = '';
         if (room.bookedBy == null) {
             roomElement.innerHTML = `
                 <h2>${room.name}</h2>
