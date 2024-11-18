@@ -46,8 +46,8 @@ function showRooms () {
                 <h2>${room.name}</h2>
                 <p>Price: <strong>${room.price}</strong></p>
                 <button onclick="bookRoom()">Book Now</button>
-                <button onclick="btnEdit()">Edit</button>
-                <button onclick="btnDelete()">Delete</button>
+                <button onclick="btnEdit(${index})">Edit</button>
+                <button onclick="btnDelete(${index})">Delete</button>
                 `;
         } else {
             roomElement.innerHTML = `
@@ -55,8 +55,8 @@ function showRooms () {
                 <p>Booked by <strong>${room.bookedBy}</strong></p>
                 <p>Price: <strong>${room.price}</strong></p>
                 <button onclick="alert('It is not available at the moment...')">Unavaiable</button>
-                <button onclick="btnEdit()">Edit</button>
-                <button onclick="btnDelete()">Delete</button>
+                <button onclick="btnEdit(${index})">Edit</button>
+                <button onclick="btnDelete(${index})">Delete</button>
                 `;
         }
         roomContainer.append(roomElement);
