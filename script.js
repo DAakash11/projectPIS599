@@ -27,9 +27,9 @@ function addRoom() {
 
 function showRooms () {
     const roomContainer = document.getElementById('room-container');
+    roomContainer.innerHTML = '';
     dataHolder.forEach((room, index) => {
         const roomElement = document.createElement('div');
-        roomElement.innerHTML = '';
         if (room.bookedBy == null) {
             roomElement.innerHTML = `
                 <h2>${room.name}</h2>
