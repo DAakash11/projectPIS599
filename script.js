@@ -19,6 +19,7 @@ function addRoom() {
     const roomName = document.getElementById('room-name');
     const roomPrice = document.getElementById('room-price');
     dataHolder.push({ bookedBy: custName, name: roomName, price:roomPrice});
+    showRooms();
 }
 
 
