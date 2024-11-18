@@ -18,7 +18,18 @@ function addRoom() {
     const custName = document.getElementById('room-bookedBy').value;
     const roomName = document.getElementById('room-name').value;
     const roomPrice = document.getElementById('room-price').value;
-    dataHolder.push({ bookedBy: custName, name: roomName, price:roomPrice});
+    if (editingRoomId === null) {
+        dataHolder.push({ name: roomName, bookedBy: custName, price:roomPrice});
+    } else {
+        dataHolder[editingRoomId] = { name: roomName, bookedBy: custName, price:roomPrice};
+        editingRoomId = null;
+        document.getElementById('add-update-btn').textContent = 'Add Room';
+    }
+    // clear form
+    document.getElementById('room-bookedBy').value = '';
+    document.getElementById('room-name').value = '';
+    document.getElementById('room-price').value = '';
+    
     showRooms();
 }
 
@@ -68,7 +79,7 @@ function btnEdit(roomIndex) {
 // function for deleting details
 
 function btnDelete(roomIndex) {
-    room.splice(roomIndex, 1);
+    dataHolder.splice(roomIndex, 1);
     showRooms();
     alert('Details deleted...');
 }
