@@ -76,6 +76,16 @@ function btnEdit(roomIndex) {
     editingRoomId = roomIndex;
 }
 
+// function for booking room in the name of customer later..
+
+function bookRoom(roomIndex) {
+    const room = dataHolder[roomIndex];
+    document.getElementById('room-name').value = room.name;
+    document.getElementById('room-price').value = room.price;
+    document.getElementById('add-update-btn').value = 'Book Room';
+    editingRoomId = roomIndex;
+}
+
 // function for deleting details
 
 function btnDelete(roomIndex) {
