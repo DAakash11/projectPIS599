@@ -12,18 +12,39 @@ let dataHolder = [
 ];
 editingRoomId = null;
 
+
 // function to add Room details
 
 function addRoom() {
-    const custName = document.getElementById('room-bookedBy').value;
+    const roomBookedBy = document.getElementById('room-bookedBy').value;
     const roomName = document.getElementById('room-name').value;
     const roomPrice = document.getElementById('room-price').value;
     if (editingRoomId === null) {
-        dataHolder.push({ name: roomName, bookedBy: custName, price:roomPrice});
+        if (roomBookedBy == '') {
+            dataHolder.push({ name: roomName, bookedBy: null, price:roomPrice});            
+        } else {
+            dataHolder.push({ name: roomName, bookedBy: roomBookedBy, price:roomPrice});
+        }
     } else {
-        dataHolder[editingRoomId] = { name: roomName, bookedBy: custName, price:roomPrice};
-        editingRoomId = null;
-        document.getElementById('add-update-btn').value = 'Add Room';
+        if (document.getElementById('add-update-btn').value === 'Book Room') {
+
+            // Basic check for valid customer name using regular expressions
+            let custRegex = /^[a-zA-Z\s]+$/;    // allows only letters and spaces
+
+            if (!custRegex.test(roomBookedBy)) {
+                alert('Only letters and spaces are avaiable. Invalid customer name. Please try again..')
+                return;
+            }
+
+            alert('The ${roomName} booked for ${roomBookedBy} at £${roomPrice} per night.')
+            dataHolder[editingRoomId] = { name: roomName, bookedBy: roomBookedBy, price:roomPrice};
+            editingRoomId = null;
+            document.getElementById('add-update-btn').value = 'Add Room';
+        } else {
+            dataHolder[editingRoomId] = { name: roomName, bookedBy: roomBookedBy, price:roomPrice};
+            editingRoomId = null;
+            document.getElementById('add-update-btn').value = 'Add Room';
+        }
     }
     // clear form
     document.getElementById('room-bookedBy').value = '';
@@ -44,7 +65,7 @@ function showRooms () {
         if (room.bookedBy == null) {
             roomElement.innerHTML = `
                 <h2>${room.name}</h2>
-                <p>Price: <strong>${room.price}</strong></p>
+                <p>Price: <strong>£${room.price}</strong></p>
                 <button onclick="bookRoom()">Book Now</button>
                 <button onclick="btnEdit(${index})">Edit</button>
                 <button onclick="btnDelete(${index})">Delete</button>
@@ -53,7 +74,7 @@ function showRooms () {
             roomElement.innerHTML = `
                 <h2>${room.name}</h2>
                 <p>Booked by <strong>${room.bookedBy}</strong></p>
-                <p>Price: <strong>${room.price}</strong></p>
+                <p>Price: <strong>£${room.price}</strong></p>
                 <button onclick="alert('It is not available at the moment...')">Unavaiable</button>
                 <button onclick="btnEdit(${index})">Edit</button>
                 <button onclick="btnDelete(${index})">Delete</button>
@@ -64,6 +85,7 @@ function showRooms () {
 }
 
 showRooms();
+
 
 // function for editing details
 
@@ -76,6 +98,7 @@ function btnEdit(roomIndex) {
     editingRoomId = roomIndex;
 }
 
+
 // function for booking room in the name of customer later..
 
 function bookRoom(roomIndex) {
@@ -86,10 +109,12 @@ function bookRoom(roomIndex) {
     editingRoomId = roomIndex;
 }
 
+
 // function for deleting details
 
 function btnDelete(roomIndex) {
+    let msg = dataHolder[roomIndex].name;
     dataHolder.splice(roomIndex, 1);
     showRooms();
-    alert('Details deleted...');
+    alert('Details for '+ msg +' deleted...');
 }
