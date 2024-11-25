@@ -66,7 +66,7 @@ function showRooms () {
             roomElement.innerHTML = `
                 <h2>${room.name}</h2>
                 <p>Price: <strong>£${room.price}</strong></p>
-                <button onclick="bookRoom()">Book Now</button>
+                <button onclick="bookRoom(${index})">Book Now</button>
                 <button onclick="btnEdit(${index})">Edit</button>
                 <button onclick="btnDelete(${index})">Delete</button>
                 `;
