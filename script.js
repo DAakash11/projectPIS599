@@ -19,6 +19,8 @@ function addRoom() {
     const roomBookedBy = document.getElementById('room-bookedBy').value;
     const roomName = document.getElementById('room-name').value;
     const roomPrice = document.getElementById('room-price').value;
+    if (roomName == '' || roomPrice == '')
+        return 
     if (editingRoomId === null) {
         if (roomBookedBy == '') {
             dataHolder.push({ name: roomName, bookedBy: null, price:roomPrice});            
