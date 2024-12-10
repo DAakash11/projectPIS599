@@ -1,3 +1,31 @@
+import { MongoClient, ServerApiVersion } from 'mongodb';
+const uri = "mongodb+srv://hotelroombookings:rooms123@cluster0.x5wvw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("roombooking").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);
+
+
+
 let dataHolder = [
     {
         name: "room zero",
@@ -11,6 +39,7 @@ let dataHolder = [
     }
 ];
 editingRoomId = null;
+const result = await collection.insertOne(dataHolder);
 
 
 // function to add Room details
@@ -59,7 +88,8 @@ function addRoom() {
 
 // function to display Rooms
 
-function showRooms () {
+async function showRooms () {
+    const dataHolder = await collection.find().toArray();
     const roomContainer = document.getElementById('room-container');
     roomContainer.innerHTML = '';
     dataHolder.forEach((room, index) => {
