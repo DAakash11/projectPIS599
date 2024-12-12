@@ -1,52 +1,12 @@
-const express = require('express')
-const { MongoClient, ServerApiVersion } = require("mongodb");
-const mongoose = require('mongoose');
-
-const app = express()
-app.use(express.json())
-const port = 3000
-
-const uri = "mongodb+srv://hotelroombookings:rooms123@cluster0.x5wvw.mongodb.net/roombooking?retryWrites=true&w=majority&appName=Cluster0";
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    }
-});
-
-async function run() {
-    try {
-        // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
-        // Send a ping to confirm a successful connection
-        await client.db("roombooking").command({ ping: 1 });
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
-    } finally {
-        // Ensures that the client will close when you finish/error
-        await client.close();
-    }
-}
-run().catch(console.dir);
-
-const { Schema } = mongoose;
-
-const roomSchema = new Schema({
-    roomname: String, 
-    bookedBy: String,
-    price: Number,
-});
-
-const Rooms = mongoose.model('roomsdata', roomSchema);
+const roomContainer = document.getElementById('room-container');
+const roomBookedBy = document.getElementById('room-bookedBy').value;
+const roomName = document.getElementById('room-name').value;
+const roomPrice = document.getElementById('room-price').value;
+const editingRoomId = null;
 
 // function to add Room details
 
 function addRoom() {
-    const roomBookedBy = document.getElementById('room-bookedBy').value;
-    const roomName = document.getElementById('room-name').value;
-    const roomPrice = document.getElementById('room-price').value;
     if (roomName == '' || roomPrice == '') return
     if (editingRoomId === null) {
         if (roomBookedBy == '') {
@@ -87,7 +47,6 @@ function addRoom() {
 // function to display Rooms
 
 function showRooms() {
-    const roomContainer = document.getElementById('room-container');
     fetch('http://51.104.6.37:3000/api')
     .then(response => response.json())
     .then(dataHolder => {
