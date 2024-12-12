@@ -17,6 +17,7 @@ h2 {
 
 #room-container {
     display: flex;
+    flex-direction: column;
     margin-top: 20px;
     flex-wrap: wrap;
     justify-content: center;

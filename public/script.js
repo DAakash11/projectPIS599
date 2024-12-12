@@ -1,19 +1,37 @@
-const roomContainer = document.getElementById('room-container');
-const roomBookedBy = document.getElementById('room-bookedBy').value;
-const roomName = document.getElementById('room-name').value;
-const roomPrice = document.getElementById('room-price').value;
-const editingRoomId = null;
+var roomContainer = document.getElementById('room-container');
+var roomForm = document.getElementById('room-form');
+
+var editingRoomId = null;
 
 // function to add Room details
 
 function addRoom() {
+    var roomBookedBy = document.getElementById('room-bookedBy').value;
+    var roomName = document.getElementById('room-name').value;
+    var roomPrice = document.getElementById('room-price').value;
     if (roomName == '' || roomPrice == '') return
     if (editingRoomId === null) {
         if (roomBookedBy == '') {
-            dataHolder.push({ roomname: roomName, bookedBy: null, price: roomPrice });
+            var newRoom = {
+                roomname: roomName,
+                bookedBy: '',
+                price: roomPrice
+            };
         } else {
-            dataHolder.push({ roomname: roomName, bookedBy: roomBookedBy, price: roomPrice });
+            var newRoom = {
+                roomname: roomName,
+                bookedBy: roomBookedBy,
+                price: roomPrice
+            };
         }
+        fetch('http://51.104.6.37:3000/api', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newRoom),
+        }).then(() => {
+            showRooms();
+            roomForm.reset();
+        }).catch(error => console.error('Error adding rooms:', error));
     } else {
         if (document.getElementById('add-update-btn').value === 'Book Room') {
 
@@ -25,22 +43,37 @@ function addRoom() {
                 return;
             }
 
-            alert('The ${roomName} booked for ${roomBookedBy} at £${roomPrice} per night.')
-            dataHolder[editingRoomId] = { roomname: roomName, bookedBy: roomBookedBy, price: roomPrice };
-            editingRoomId = null;
-            document.getElementById('add-update-btn').value = 'Add Room';
+            alert(`The ${roomName} booked for ${roomBookedBy} at £${roomPrice} per night.`)
+            var newRoom = {
+                roomname: roomName,
+                bookedBy: roomBookedBy,
+                price: roomPrice
+            };
         } else {
-            dataHolder[editingRoomId] = { roomname: roomName, bookedBy: roomBookedBy, price: roomPrice };
-            editingRoomId = null;
-            document.getElementById('add-update-btn').value = 'Add Room';
+            var newRoom = {
+                roomname: roomName,
+                bookedBy: '',
+                price: roomPrice
+            };
         }
+        fetch(`http://51.104.6.37:3000/api/${editingRoomId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newRoom),
+        }).then(response => {
+            if (response.ok) {
+                alert('Details updated..')
+                showRooms();
+                roomForm.reset();
+            } else {
+                return response.json().then(err => {
+                    alert('Failed to update vital: ' + (err.message || response.statusText));
+                });
+            }
+        }).catch(error => console.error('Error adding rooms:', error));
+        document.getElementById('add-update-btn').value = 'Add Room';
+        editingRoomId = null;
     }
-    // clear form
-    document.getElementById('room-bookedBy').value = '';
-    document.getElementById('room-name').value = '';
-    document.getElementById('room-price').value = '';
-
-    showRooms();
 }
 
 
@@ -48,32 +81,34 @@ function addRoom() {
 
 function showRooms() {
     fetch('http://51.104.6.37:3000/api')
-    .then(response => response.json())
-    .then(dataHolder => {
-        roomContainer.innerHTML = '';
-        dataHolder.forEach((room, index) => {
-            const roomElement = document.createElement('div');
-            if (room.bookedBy == null) {
-                roomElement.innerHTML = `
+        .then(response => response.json())
+        .then(data => {
+            roomContainer.innerHTML = '';
+            dataHolder = data;
+            console.log(dataHolder);
+            data.forEach((room) => {
+                const roomElement = document.createElement('div');
+                if (room.bookedBy == '') {
+                    roomElement.innerHTML = `
                     <h2>${room.roomname}</h2>
                     <p>Price: <strong>£${room.price}</strong></p>
-                    <button onclick="bookRoom(${index})">Book Now</button>
-                    <button onclick="btnEdit(${index})">Edit</button>
-                    <button onclick="btnDelete(${index})">Delete</button>
+                    <button onclick="bookRoom('${room._id.toString()}')">Book Now</button>
+                    <button onclick="btnEdit('${room._id.toString()}')">Edit</button>
+                    <button onclick="btnDelete('${room._id.toString()}')">Delete</button>
                     `;
-            } else {
-                roomElement.innerHTML = `
+                } else {
+                    roomElement.innerHTML = `
                     <h2>${room.roomname}</h2>
                     <p>Booked by <strong>${room.bookedBy}</strong></p>
                     <p>Price: <strong>£${room.price}</strong></p>
                     <button onclick="alert('It is not available at the moment...')">Unavaiable</button>
-                    <button onclick="btnEdit(${index})">Edit</button>
-                    <button onclick="btnDelete(${index})">Delete</button>
+                    <button onclick="btnEdit('${room._id.toString()}')">Edit</button>
+                    <button onclick="btnDelete('${room._id.toString()}')">Delete</button>
                     `;
-            }
-            roomContainer.append(roomElement);
+                }
+                roomContainer.append(roomElement);
+            });
         });
-    });
 }
 
 showRooms();
@@ -82,35 +117,40 @@ showRooms();
 // function for editing details
 
 function btnEdit(roomIndex) {
-    const room = dataHolder[roomIndex];
-    document.getElementById('room-bookedBy').value = room.bookedBy;
-    document.getElementById('room-name').value = room.roomname;
-    document.getElementById('room-price').value = room.price;
-    document.getElementById('add-update-btn').value = 'Update Details';
-    editingRoomId = roomIndex;
+    fetch(`http://51.104.6.37:3000/api/${roomIndex}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('room-bookedBy').value = data.bookedBy;
+            document.getElementById('room-name').value = data.roomname;
+            document.getElementById('room-price').value = data.price;
+            document.getElementById('add-update-btn').value = 'Update Details';
+            editingRoomId = data._id.toString();
+        })
 }
 
 
 // function for booking room in the name of customer later..
 
 function bookRoom(roomIndex) {
-    const room = dataHolder[roomIndex];
-    document.getElementById('room-name').value = room.roomname;
-    document.getElementById('room-price').value = room.price;
-    document.getElementById('add-update-btn').value = 'Book Room';
-    editingRoomId = roomIndex;
+    fetch(`http://51.104.6.37:3000/api/${roomIndex}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('room-bookedBy').value = data.bookedBy;
+            document.getElementById('room-name').value = data.roomname;
+            document.getElementById('room-price').value = data.price;
+            document.getElementById('add-update-btn').value = 'Book Room';
+            editingRoomId = data._id.toString();
+        })
 }
 
 
 // function for deleting details
 
 function btnDelete(roomIndex) {
-    if (dataHolder[roomIndex.bookedBy] != null) {
-        let msg = dataHolder[roomIndex].bookedBy;
-    } else {
-        let msg = dataHolder[roomIndex].roomname;        
-    }
-    dataHolder.splice(roomIndex, 1);
-    showRooms();
-    alert('Details for ' + msg + ' deleted...');
+    fetch(`http://51.104.6.37:3000/api/${roomIndex}`, { method: 'DELETE' }).then(() => {
+        showRooms();
+        roomForm.reset();
+    }).catch(error => console.error('Error adding rooms:', error));
+    // let msg = dataHolder[roomIndex].roomname;
+    alert('Details deleted...');
 }
