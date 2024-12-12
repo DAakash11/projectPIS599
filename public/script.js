@@ -88,7 +88,7 @@ function addRoom() {
 
 function showRooms() {
     const roomContainer = document.getElementById('room-container');
-    fetch('http://localhost:3000/api')
+    fetch('http://51.104.6.37:3000/api')
     .then(response => response.json())
     .then(dataHolder => {
         roomContainer.innerHTML = '';
