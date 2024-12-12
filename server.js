@@ -51,15 +51,12 @@ const Rooms = mongoose.model('roomsdata', roomSchema);
 app.get('/api', async (req, res) => {
     const dataHolder = await Rooms.find({})
     res.send(dataHolder)
-    // ;(await dataHolder).forEach(element => {
-    //     console.log(element.roomname);
-    //     console.log(element.bookedBy);
-    //     console.log(element.custname);
-    //     console.log(element.price);
-    // });
-    // console.log(data.roomname);
-    // console.log(data.bookedBy);
-    // console.log(data.price);
+    ;(await dataHolder).forEach(element => {
+        console.log(element.roomname);
+        console.log(element.bookedBy);
+        console.log(element.custname);
+        console.log(element.price);
+    });
 })
 
 app.post('/api', async (req, res) => {
@@ -70,16 +67,19 @@ app.post('/api', async (req, res) => {
     })
     await dataHolder.save()
     res.send('Room created successfully..')
+    console.log('Room created successfully..')
 })
 
 app.delete('/api/:id', async (req, res) => {
     await Rooms.findByIdAndDelete(req.params.id)
     res.send('Rooms deleted successfully..')
+    console.log('Rooms deleted successfully..')
 })
 
 app.patch('/api/:id', async (req, res) => {
     await Rooms.findByIdAndUpdate(req.params.id, req.body)
     res.send('Rooms updated successfully..')
+    console.log('Rooms updated successfully..')
 })
 
 app.listen(port, () => {
